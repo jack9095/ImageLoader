@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LibEasyGlide</string>
+    <string name="f_glide_save_success">保存图片成功</string>
+    <string name="f_glide_save_failed">保存失败</string>
+</resources>
