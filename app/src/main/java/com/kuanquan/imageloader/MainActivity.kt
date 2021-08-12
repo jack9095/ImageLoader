@@ -1,25 +1,47 @@
 package com.kuanquan.imageloader
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.request.target.Target
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.kuanquan.glidelibrary.FGlide.downloadImageToGallery
+import com.kuanquan.glidelibrary.FGlide.loadBlurImage
+import com.kuanquan.glidelibrary.FGlide.loadBorderImage
+import com.kuanquan.glidelibrary.FGlide.loadCircleImage
+import com.kuanquan.glidelibrary.FGlide.loadCircleWithBorderImage
+import com.kuanquan.glidelibrary.FGlide.loadGrayImage
 import com.kuanquan.glidelibrary.FGlide.loadImage
+import com.kuanquan.glidelibrary.FGlide.loadImageWithTransformation
+import com.kuanquan.glidelibrary.FGlide.loadResizeXYImage
+import com.kuanquan.glidelibrary.FGlide.loadRoundCornerImage
+import com.kuanquan.glidelibrary.transformation.BlurTransformation
+import com.kuanquan.glidelibrary.transformation.GrayscaleTransformation
+import com.kuanquan.glidelibrary.transformation.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
     private val imageUrls = mutableListOf(
-        "https://www.gstatic.com/webp/animated/1.webp",
-        "https://qidian.qpic.cn/qidian_common/349573/a36f7d7d8a5e15e1cf3c32d05109467a/0",
-        "https://mathiasbynens.be/demo/animated-webp-supported.webp",
-        "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
-        "https://omsproductionimg.yangkeduo.com/images/label/610/GS4X5Ojt5TlVPuAtNGqr2hywByGs2FHN.jpg@120w_1l_50Q.webp",
+//        "https://www.gstatic.com/webp/animated/1.webp",
+//        "https://qidian.qpic.cn/qidian_common/349573/a36f7d7d8a5e15e1cf3c32d05109467a/0",
+//        "https://mathiasbynens.be/demo/animated-webp-supported.webp",
+//        "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
+//        "https://omsproductionimg.yangkeduo.com/images/label/610/GS4X5Ojt5TlVPuAtNGqr2hywByGs2FHN.jpg@120w_1l_50Q.webp",
         "https://p.upyun.com/demo/webp/animated-gif/0.gif",
         "https://p.upyun.com/demo/webp/webp/animated-gif-0.webp",
         "https://www.gstatic.com/webp/gallery3/1_webp_ll.webp",
@@ -161,16 +183,74 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = ImageAdapter(imageUrls)
     }
 
-    internal class ImageAdapter(private val items: List<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ImageAdapter(private val items: List<String>) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_banner_image, parent, false)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_banner_image, parent, false)
             return ImageViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val imageViewHolder = holder as ImageViewHolder
             Log.e("MainActivity", "图片加载成功")
-            imageViewHolder.image.loadImage(imageViewHolder.image.context, items[position])
+
+            when(position){
+                0 -> {
+                    imageViewHolder.image.setOnClickListener {
+                        if (!hasPermission()) {
+                            requestPermission()
+                        }
+                    }
+                    imageViewHolder.image.loadImage(imageViewHolder.image.context, items[position])
+                }
+                1 -> {
+                    imageViewHolder.image.loadImage(imageViewHolder.image.context, items[position], requestListener = object :
+                        RequestListener<Drawable?> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+                            Toast.makeText(application, R.string.load_failed, Toast.LENGTH_LONG).show()
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            Toast.makeText(application, R.string.load_success, Toast.LENGTH_LONG).show()
+                            return false
+                        }
+                    })
+                }
+                2 -> {
+                    imageViewHolder.image.loadBlurImage(imageViewHolder.image.context, items[position])
+                }
+                3 -> {
+                    imageViewHolder.image.loadCircleImage(imageViewHolder.image.context, items[position])
+                }
+                4 -> {
+                    imageViewHolder.image.loadRoundCornerImage(imageViewHolder.image.context, items[position])
+                }
+                5 -> {
+                    imageViewHolder.image.loadGrayImage(imageViewHolder.image.context, items[position])
+                }
+                6 -> {
+                    imageViewHolder.image.loadResizeXYImage(imageViewHolder.image.context, items[position], 800, 200)
+                }
+                7 -> {
+                    imageViewHolder.image.loadImageWithTransformation(imageViewHolder.image.context, items[position], GrayscaleTransformation(), RoundedCornersTransformation(50, 0))
+                }
+                8 -> {
+                    imageViewHolder.image.loadCircleWithBorderImage(imageViewHolder.image.context, items[position])
+                }
+                9 -> {
+                    imageViewHolder.image.loadImageWithTransformation(imageViewHolder.image.context, items[position], BlurTransformation(imageViewHolder.image.context, 20), GrayscaleTransformation(), CircleCrop())
+                }
+                10 -> {
+                    imageViewHolder.image.loadBorderImage(imageViewHolder.image.context, items[position])
+                }
+                else -> {
+                    imageViewHolder.image.loadImage(imageViewHolder.image.context, items[position])
+                }
+            }
+
+
 //            GlideUtil.load(items[position], imageViewHolder.image, R.mipmap.ic_launcher)
 //            FrescoUtil.load(items[position], imageViewHolder.image)
         }
@@ -194,4 +274,42 @@ class MainActivity : AppCompatActivity() {
     private fun dp2px(dp: Float): Float {
         return dp * resources.displayMetrics.density
     }
+
+
+    /**
+     * 判断是否有权限
+     */
+    private fun hasPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    /**
+     * 请求权限
+     */
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            /*  if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)!=true){
+                  Toast.makeText(this, "请在设置中配置授权", Toast.LENGTH_SHORT).show()
+              }*/
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // 同意申请的权限
+                downloadImageToGallery(this, imageUrls[5])
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    companion object{
+        private const val PERMISSION_REQUEST_CODE = 0x01
+    }
+
 }

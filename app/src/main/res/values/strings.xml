@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ImageLoader</string>
+    <string name="load_failed">图片加载失败</string>
+    <string name="load_success">图片加载成功</string>
 </resources>
