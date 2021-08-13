@@ -128,7 +128,7 @@ class GlideConfigImpl private constructor(builder: Builder) : ImageConfig() {
             return this
         }
 
-        fun blurValue(blurValue: Int): Builder { //blurValue 建议设置为 15
+        fun blurValue(blurValue: Int): Builder { // blurValue 建议设置为 15
             this.blurValue = blurValue
             return this
         }
@@ -158,7 +158,7 @@ class GlideConfigImpl private constructor(builder: Builder) : ImageConfig() {
             return this
         }
 
-        fun placeholderDrawble(placeholderDrawble: Drawable?): Builder {
+        fun placeholderDrawable(placeholderDrawble: Drawable?): Builder {
             placeholderDrawable = placeholderDrawble
             return this
         }

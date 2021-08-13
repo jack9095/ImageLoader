@@ -56,13 +56,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadImage(context: Context, url: String?, @DrawableRes placeHolder: Int = placeHolderImageView,  requestListener: RequestListener<Drawable?>? = null) {
+    fun ImageView.loadImage(context: Context, url: String?, isCropCenter: Boolean = false, isCrossFade: Boolean = false, @DrawableRes placeHolder: Int = placeHolderImageView,  requestListener: RequestListener<Drawable?>? = null) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
-                        .isCropCenter(true)
-                        .isCrossFade(true)
+                        .isCropCenter(isCropCenter)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -77,13 +77,13 @@ object FGlide {
      * @param resizeY
      */
     @JvmOverloads
-    fun ImageView.loadResizeXYImage(context: Context, url: String?, resizeX: Int, resizeY: Int, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadResizeXYImage(context: Context, url: String?, resizeX: Int, resizeY: Int, @DrawableRes placeHolder: Int = placeHolderImageView, isCropCenter: Boolean = false, isCrossFade: Boolean = false, ) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
-                        .isCropCenter(true)
-                        .isCrossFade(true)
+                        .isCropCenter(isCropCenter)
+                        .isCrossFade(isCrossFade)
                         .resize(resizeX, resizeY)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
@@ -92,13 +92,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadCircleImage(context: Context, url: String?, @DrawableRes placeHolder: Int = circlePlaceholderImageView) {
+    fun ImageView.loadCircleImage(context: Context, url: String?, isCropCircle: Boolean = false, isCrossFade: Boolean = false, @DrawableRes placeHolder: Int = circlePlaceholderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
-                        .isCropCircle(true)
-                        .isCrossFade(true)
+                        .isCropCircle(isCropCircle)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -106,13 +106,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadGrayImage(context: Context, url: String?, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadGrayImage(context: Context, url: String?, isCrossFade: Boolean = false, @DrawableRes placeHolder: Int = placeHolderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(CenterCrop(), GrayscaleTransformation())
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -120,13 +120,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadBlurImage(context: Context, url: String?, radius: Int = 10, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadBlurImage(context: Context, url: String?, radius: Int = 10, isCrossFade: Boolean = false, @DrawableRes placeHolder: Int = placeHolderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(CenterCrop(), BlurTransformation(context, radius))
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -134,13 +134,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadRoundCornerImage(context: Context, url: String?, radius: Int = 40, margin: Int = 0, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadRoundCornerImage(context: Context, url: String?, radius: Int = 40, margin: Int = 0, isCrossFade: Boolean = false, @DrawableRes placeHolder: Int = placeHolderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(CenterCrop(), RoundedCornersTransformation(radius, margin))
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -148,13 +148,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadCircleWithBorderImage(context: Context, url: String?, borderWidth: Int = 2, @ColorInt borderColor: Int = 0xACACAC, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadCircleWithBorderImage(context: Context, url: String?, borderWidth: Int = 2, isCrossFade: Boolean = false, @ColorInt borderColor: Int = 0xACACAC, @DrawableRes placeHolder: Int = placeHolderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(CircleWithBorderTransformation(borderWidth, borderColor))
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -162,13 +162,13 @@ object FGlide {
     }
 
     @JvmOverloads
-    fun ImageView.loadBorderImage(context: Context, url: String?, borderWidth: Int = 2, @ColorInt borderColor: Int = 0xACACAC, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadBorderImage(context: Context, url: String?, borderWidth: Int = 2, isCrossFade: Boolean = false, @ColorInt borderColor: Int = 0xACACAC, @DrawableRes placeHolder: Int = placeHolderImageView) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(BorderTransformation(borderWidth, borderColor))
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
@@ -183,13 +183,13 @@ object FGlide {
      * CircleCrop
      * CenterCrop
      */
-    fun ImageView.loadImageWithTransformation(context: Context, url: String?, vararg bitmapTransformations: BitmapTransformation, @DrawableRes placeHolder: Int = placeHolderImageView) {
+    fun ImageView.loadImageWithTransformation(context: Context, url: String?, vararg bitmapTransformations: BitmapTransformation, @DrawableRes placeHolder: Int = placeHolderImageView, isCrossFade: Boolean = false,) {
         loadImage(context,
                 GlideConfigImpl
                         .builder()
                         .url(url)
                         .transformation(*bitmapTransformations)
-                        .isCrossFade(true)
+                        .isCrossFade(isCrossFade)
                         .errorPic(placeHolder)
                         .placeholder(placeHolder)
                         .imageView(this)
